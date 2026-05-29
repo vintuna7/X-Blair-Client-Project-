@@ -1,8 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Chromebook Checkout</title>
-  <link> rel="stylesheet" href="style.css" </link>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chromebook Checkout — Blair</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
 </head>
-
 <body>
-  
-</body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">📦 Blair Chromebook System</div>
+      <nav>
+        <button class="nav-btn active" onclick="showTab('checkout')">Check Out</button>
+        <button class="nav-btn" onclick="showTab('checkin')">Check In</button>
+        <button class="nav-btn" onclick="showTab('report')">Report</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- CHECKOUT TAB -->
+    <section id="tab-checkout" class="tab active">
+      <div class="card">
+        <h2>Check Out a Chromebook</h2>
+        <p class="subtitle">Enter the Chromebook number and student ID to check out.</p>
+        <div class="form-grid">
+          <div class="field">
+            <label>Chromebook #</label>
+            <input type="number" id="co-cb-num" placeholder="1 – 32" min="1" max="32"/>
+          </div>
+          <div class="field">
+            <label>Student ID</label>
+            <input type="text" id="co-student-id" placeholder="e.g. 123456"/>
+          </div>
+          <div class="field">
+            <label>Student Name <span class="optional">(optional)</span></label>
+            <input type="text" id="co-student-name" placeholder="First Last"/>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="text" id="co-date" readonly/>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="checkout()">✓ Check Out</button>
+        <div id="co-msg" class="msg"></div>
+      </div>
+    </section>
+
+    <!-- CHECKIN TAB -->
+    <section id="tab-checkin" class="tab">
+      <div class="card">
+        <h2>Check In a Chromebook</h2>
+        <p class="subtitle">Enter the Chromebook number to mark it as returned.</p>
+        <div class="form-grid">
+          <div class="field">
+            <label>Chromebook #</label>
+            <input type="number" id="ci-cb-num" placeholder="1 – 32" min="1" max="32"/>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="text" id="ci-date" readonly/>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="checkin()">↩ Check In</button>
+        <div id="ci-msg" class="msg"></div>
+      </div>
+    </section>
+
+    <!-- REPORT TAB -->
+    <section id="tab-report" class="tab">
+      <div class="card wide">
+        <div class="report-header">
+          <div>
+            <h2>Checkout Report</h2>
+            <p class="subtitle">All 32 Chromebooks — most recent activity first.</p>
+          </div>
+          <div class="report
+
