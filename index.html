@@ -1,82 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chromebook Checkout — Blair</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blair Chromebook System</title>
+
+<style>
+/* CSS GOES HERE */
+</style>
+
 </head>
 <body>
 
-  <header>
-    <div class="header-inner">
-      <div class="logo">📦 Blair Chromebook System</div>
-      <nav>
-        <button class="nav-btn active" onclick="showTab('checkout')">Check Out</button>
-        <button class="nav-btn" onclick="showTab('checkin')">Check In</button>
-        <button class="nav-btn" onclick="showTab('report')">Report</button>
-      </nav>
-    </div>
-  </header>
+<!-- LOGIN SCREEN -->
 
-  <main>
+<div id="loginScreen" class="card login-card">
+
+  <h1>📦 Blair Chromebook System</h1>
+
+  <p class="subtitle">
+    Create an account or sign in
+  </p>
+
+  <input
+    id="username"
+    placeholder="Username"
+  >
+
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+  >
+
+  <div class="login-buttons">
+
+    <button
+      class="btn"
+      onclick="login()"
+    >
+      Sign In
+    </button>
+
+    <button
+      class="btn"
+      onclick="createAccount()"
+    >
+      Create Account
+    </button>
+
+  </div>
+
+  <div id="loginMsg" class="msg"></div>
+
+</div>
+
+<!-- MAIN APP -->
+
+<div id="app" class="hidden">
+
+  <div class="card">
+
+    <div class="topbar">
+
+      <h1>
+        📦 Blair Chromebook System
+      </h1>
+
+      <button
+        class="btn"
+        onclick="logout()"
+      >
+        Logout
+      </button>
+
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <div class="nav">
+
+      <button
+        class="btn"
+        onclick="showTab('checkout')"
+      >
+        Check Out
+      </button>
+
+      <button
+        class="btn"
+        onclick="showTab('checkin')"
+      >
+        Check In
+      </button>
+
+      <button
+        class="btn"
+        onclick="showTab('report')"
+      >
+        Report
+      </button>
+
+    </div>
 
     <!-- CHECKOUT TAB -->
-    <section id="tab-checkout" class="tab active">
-      <div class="card">
-        <h2>Check Out a Chromebook</h2>
-        <p class="subtitle">Enter the Chromebook number and student ID to check out.</p>
-        <div class="form-grid">
-          <div class="field">
-            <label>Chromebook #</label>
-            <input type="number" id="co-cb-num" placeholder="1 – 32" min="1" max="32"/>
-          </div>
-          <div class="field">
-            <label>Student ID</label>
-            <input type="text" id="co-student-id" placeholder="e.g. 123456"/>
-          </div>
-          <div class="field">
-            <label>Student Name <span class="optional">(optional)</span></label>
-            <input type="text" id="co-student-name" placeholder="First Last"/>
-          </div>
-          <div class="field">
-            <label>Date</label>
-            <input type="text" id="co-date" readonly/>
-          </div>
-        </div>
-        <button class="btn-primary" onclick="checkout()">✓ Check Out</button>
-        <div id="co-msg" class="msg"></div>
-      </div>
-    </section>
+
+    <div
+      id="checkout"
+      class="tab active"
+    >
+
+      <h2>Check Out Chromebook</h2>
+
+      <input
+        id="coNum"
+        placeholder="Chromebook Number"
+      >
+
+      <input
+        id="coStudent"
+        placeholder="Student ID"
+      >
+
+      <button
+        class="btn"
+        onclick="checkout()"
+      >
+        Check Out
+      </button>
+
+      <div id="coMsg"></div>
+
+    </div>
 
     <!-- CHECKIN TAB -->
-    <section id="tab-checkin" class="tab">
-      <div class="card">
-        <h2>Check In a Chromebook</h2>
-        <p class="subtitle">Enter the Chromebook number to mark it as returned.</p>
-        <div class="form-grid">
-          <div class="field">
-            <label>Chromebook #</label>
-            <input type="number" id="ci-cb-num" placeholder="1 – 32" min="1" max="32"/>
-          </div>
-          <div class="field">
-            <label>Date</label>
-            <input type="text" id="ci-date" readonly/>
-          </div>
-        </div>
-        <button class="btn-primary" onclick="checkin()">↩ Check In</button>
-        <div id="ci-msg" class="msg"></div>
-      </div>
-    </section>
+
+    <div
+      id="checkin"
+      class="tab"
+    >
+
+      <h2>Check In Chromebook</h2>
+
+      <input
+        id="ciNum"
+        placeholder="Chromebook Number"
+      >
+
+      <button
+        class="btn"
+        onclick="checkin()"
+      >
+        Check In
+      </button>
+
+      <div id="ciMsg"></div>
+
+    </div>
 
     <!-- REPORT TAB -->
-    <section id="tab-report" class="tab">
-      <div class="card wide">
-        <div class="report-header">
-          <div>
-            <h2>Checkout Report</h2>
-            <p class="subtitle">All 32 Chromebooks — most recent activity first.</p>
-          </div>
-          <div class="report
 
+    <div
+      id="report"
+      class="tab"
+    >
+
+      <h2>Report</h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Chromebook</th>
+            <th>Student</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="reportBody">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// JavaScript goes here
+</script>
+
+</body>
+</html>
