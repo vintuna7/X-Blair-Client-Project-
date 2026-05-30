@@ -4,154 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blair Chromebook System</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  min-height: 100vh;
-  background: #0d0f14;
-  color: #e8ecf4;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.card {
-  background: #15181f;
-  border: 1px solid #2a2f3d;
-  border-radius: 14px;
-  padding: 36px;
-  width: 100%;
-  max-width: 700px;
-}
-
-.login-card {
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-h1 { font-size: 1.4rem; font-weight: 800; color: #00e5a0; margin-bottom: 4px; }
-h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
-
-.subtitle { color: #6b7494; font-size: 0.9rem; }
-
-input {
-  width: 100%;
-  background: #1c2029;
-  border: 1px solid #2a2f3d;
-  border-radius: 8px;
-  color: #e8ecf4;
-  font-size: 0.95rem;
-  padding: 10px 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-input:focus { border-color: #00e5a0; }
-
-.btn {
-  background: #00e5a0;
-  border: none;
-  border-radius: 8px;
-  color: #0d0f14;
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn:hover { opacity: 0.85; }
-
-.login-buttons { display: flex; gap: 10px; }
-.login-buttons .btn:last-child {
-  background: #1c2029;
-  border: 1px solid #2a2f3d;
-  color: #e8ecf4;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.topbar .btn {
-  background: #1c2029;
-  border: 1px solid #2a2f3d;
-  color: #e8ecf4;
-  font-size: 0.8rem;
-  padding: 7px 14px;
-}
-
-.nav {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #2a2f3d;
-  padding-bottom: 16px;
-}
-
-.nav .btn {
-  background: transparent;
-  border: 1px solid #2a2f3d;
-  color: #6b7494;
-}
-
-.nav .btn.active {
-  background: #00e5a0;
-  border-color: #00e5a0;
-  color: #0d0f14;
-}
-
-.tab { display: none; flex-direction: column; gap: 12px; }
-.tab.active { display: flex; }
-
-.msg { font-size: 0.875rem; min-height: 20px; margin-top: 4px; }
-.success { color: #00e5a0; }
-.error   { color: #ff4f4f; }
-
-table { width: 100%; border-collapse: collapse; }
-
-th {
-  text-align: left;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #6b7494;
-  padding: 10px 12px;
-  border-bottom: 1px solid #2a2f3d;
-}
-
-td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #1c2029;
-  font-size: 0.875rem;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.badge-out { background: rgba(255,79,79,0.15); color: #ff4f4f; }
-.badge-in  { background: rgba(0,229,160,0.12); color: #00e5a0; }
-
-.hidden { display: none; }
-
-@media (max-width: 500px) {
-  .nav { flex-wrap: wrap; }
-  .login-buttons { flex-direction: column; }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -223,15 +76,11 @@ td {
 </div>
 
 <script>
-// ── Accounts ──
 function getUsers()     { return JSON.parse(localStorage.getItem('cbUsers')   || '{}'); }
 function saveUsers(u)   { localStorage.setItem('cbUsers',   JSON.stringify(u)); }
-
-// ── Records ──
 function getRecords()   { return JSON.parse(localStorage.getItem('cbRecords') || '[]'); }
 function saveRecords(r) { localStorage.setItem('cbRecords', JSON.stringify(r)); }
 
-// ── Auto-login ──
 window.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('cbLoggedIn')) {
     document.getElementById('loginScreen').classList.add('hidden');
@@ -240,15 +89,14 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ── Auth ──
 function login() {
   const user  = document.getElementById('username').value.trim();
   const pass  = document.getElementById('password').value.trim();
   const msg   = document.getElementById('loginMsg');
   const users = getUsers();
-  if (!user || !pass)         { showMsg(msg, 'Enter username and password.', 'error'); return; }
-  if (!users[user])           { showMsg(msg, 'Account not found.', 'error'); return; }
-  if (users[user] !== pass)   { showMsg(msg, 'Wrong password.', 'error'); return; }
+  if (!user || !pass)       { showMsg(msg, 'Enter username and password.', 'error'); return; }
+  if (!users[user])         { showMsg(msg, 'Account not found.', 'error'); return; }
+  if (users[user] !== pass) { showMsg(msg, 'Wrong password.', 'error'); return; }
   localStorage.setItem('cbLoggedIn', user);
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
@@ -273,7 +121,6 @@ function logout() {
   document.getElementById('loginScreen').classList.remove('hidden');
 }
 
-// ── Tabs ──
 function showTab(name, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav .btn').forEach(b => b.classList.remove('active'));
@@ -282,7 +129,6 @@ function showTab(name, btn) {
   if (name === 'report') loadReport();
 }
 
-// ── Check Out ──
 function checkout() {
   const cbNum = document.getElementById('coNum').value.trim();
   const stuId = document.getElementById('coStudent').value.trim();
@@ -301,7 +147,6 @@ function checkout() {
   document.getElementById('coName').value = '';
 }
 
-// ── Check In ──
 function checkin() {
   const cbNum = document.getElementById('ciNum').value.trim();
   const msg   = document.getElementById('ciMsg');
@@ -315,7 +160,6 @@ function checkin() {
   document.getElementById('ciNum').value = '';
 }
 
-// ── Report ──
 function loadReport() {
   const records = getRecords();
   const tbody   = document.getElementById('reportBody');
@@ -335,7 +179,6 @@ function loadReport() {
   `).join('');
 }
 
-// ── Helpers ──
 function today() {
   return new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
