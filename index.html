@@ -4,195 +4,346 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blair Chromebook System</title>
-
 <style>
-/* CSS GOES HERE */
-</style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+body {
+  min-height: 100vh;
+  background: #0d0f14;
+  color: #e8ecf4;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  background: #15181f;
+  border: 1px solid #2a2f3d;
+  border-radius: 14px;
+  padding: 36px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.login-card {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+h1 { font-size: 1.4rem; font-weight: 800; color: #00e5a0; margin-bottom: 4px; }
+h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+
+.subtitle { color: #6b7494; font-size: 0.9rem; }
+
+input {
+  width: 100%;
+  background: #1c2029;
+  border: 1px solid #2a2f3d;
+  border-radius: 8px;
+  color: #e8ecf4;
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus { border-color: #00e5a0; }
+
+.btn {
+  background: #00e5a0;
+  border: none;
+  border-radius: 8px;
+  color: #0d0f14;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:hover { opacity: 0.85; }
+
+.login-buttons { display: flex; gap: 10px; }
+.login-buttons .btn:last-child {
+  background: #1c2029;
+  border: 1px solid #2a2f3d;
+  color: #e8ecf4;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.topbar .btn {
+  background: #1c2029;
+  border: 1px solid #2a2f3d;
+  color: #e8ecf4;
+  font-size: 0.8rem;
+  padding: 7px 14px;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #2a2f3d;
+  padding-bottom: 16px;
+}
+
+.nav .btn {
+  background: transparent;
+  border: 1px solid #2a2f3d;
+  color: #6b7494;
+}
+
+.nav .btn.active {
+  background: #00e5a0;
+  border-color: #00e5a0;
+  color: #0d0f14;
+}
+
+.tab { display: none; flex-direction: column; gap: 12px; }
+.tab.active { display: flex; }
+
+.msg { font-size: 0.875rem; min-height: 20px; margin-top: 4px; }
+.success { color: #00e5a0; }
+.error   { color: #ff4f4f; }
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7494;
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a2f3d;
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #1c2029;
+  font-size: 0.875rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-out { background: rgba(255,79,79,0.15); color: #ff4f4f; }
+.badge-in  { background: rgba(0,229,160,0.12); color: #00e5a0; }
+
+.hidden { display: none; }
+
+@media (max-width: 500px) {
+  .nav { flex-wrap: wrap; }
+  .login-buttons { flex-direction: column; }
+}
+</style>
 </head>
 <body>
 
 <!-- LOGIN SCREEN -->
-
 <div id="loginScreen" class="card login-card">
-
   <h1>📦 Blair Chromebook System</h1>
-
-  <p class="subtitle">
-    Create an account or sign in
-  </p>
-
-  <input
-    id="username"
-    placeholder="Username"
-  >
-
-  <input
-    id="password"
-    type="password"
-    placeholder="Password"
-  >
-
+  <p class="subtitle">Create an account or sign in</p>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
   <div class="login-buttons">
-
-    <button
-      class="btn"
-      onclick="login()"
-    >
-      Sign In
-    </button>
-
-    <button
-      class="btn"
-      onclick="createAccount()"
-    >
-      Create Account
-    </button>
-
+    <button class="btn" onclick="login()">Sign In</button>
+    <button class="btn" onclick="createAccount()">Create Account</button>
   </div>
-
   <div id="loginMsg" class="msg"></div>
-
 </div>
 
 <!-- MAIN APP -->
-
 <div id="app" class="hidden">
-
   <div class="card">
-
     <div class="topbar">
-
-      <h1>
-        📦 Blair Chromebook System
-      </h1>
-
-      <button
-        class="btn"
-        onclick="logout()"
-      >
-        Logout
-      </button>
-
+      <h1>📦 Blair Chromebook System</h1>
+      <button class="btn" onclick="logout()">Logout</button>
     </div>
 
     <!-- NAVIGATION -->
-
     <div class="nav">
-
-      <button
-        class="btn"
-        onclick="showTab('checkout')"
-      >
-        Check Out
-      </button>
-
-      <button
-        class="btn"
-        onclick="showTab('checkin')"
-      >
-        Check In
-      </button>
-
-      <button
-        class="btn"
-        onclick="showTab('report')"
-      >
-        Report
-      </button>
-
+      <button class="btn active" onclick="showTab('checkout', this)">Check Out</button>
+      <button class="btn" onclick="showTab('checkin', this)">Check In</button>
+      <button class="btn" onclick="showTab('report', this)">Report</button>
     </div>
 
     <!-- CHECKOUT TAB -->
-
-    <div
-      id="checkout"
-      class="tab active"
-    >
-
+    <div id="checkout" class="tab active">
       <h2>Check Out Chromebook</h2>
-
-      <input
-        id="coNum"
-        placeholder="Chromebook Number"
-      >
-
-      <input
-        id="coStudent"
-        placeholder="Student ID"
-      >
-
-      <button
-        class="btn"
-        onclick="checkout()"
-      >
-        Check Out
-      </button>
-
-      <div id="coMsg"></div>
-
+      <input id="coNum" placeholder="Chromebook Number (1–32)">
+      <input id="coStudent" placeholder="Student ID">
+      <input id="coName" placeholder="Student Name (optional)">
+      <button class="btn" onclick="checkout()">Check Out</button>
+      <div id="coMsg" class="msg"></div>
     </div>
 
     <!-- CHECKIN TAB -->
-
-    <div
-      id="checkin"
-      class="tab"
-    >
-
+    <div id="checkin" class="tab">
       <h2>Check In Chromebook</h2>
-
-      <input
-        id="ciNum"
-        placeholder="Chromebook Number"
-      >
-
-      <button
-        class="btn"
-        onclick="checkin()"
-      >
-        Check In
-      </button>
-
-      <div id="ciMsg"></div>
-
+      <input id="ciNum" placeholder="Chromebook Number (1–32)">
+      <button class="btn" onclick="checkin()">Check In</button>
+      <div id="ciMsg" class="msg"></div>
     </div>
 
     <!-- REPORT TAB -->
-
-    <div
-      id="report"
-      class="tab"
-    >
-
+    <div id="report" class="tab">
       <h2>Report</h2>
-
       <table>
-
         <thead>
-
           <tr>
-            <th>Chromebook</th>
-            <th>Student</th>
+            <th>CB #</th>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Checked Out</th>
+            <th>Checked In</th>
             <th>Status</th>
           </tr>
-
         </thead>
-
-        <tbody id="reportBody">
-        </tbody>
-
+        <tbody id="reportBody"></tbody>
       </table>
-
     </div>
 
   </div>
-
 </div>
 
 <script>
-// JavaScript goes here
-</script>
+// ── Accounts ──
+function getUsers()     { return JSON.parse(localStorage.getItem('cbUsers')   || '{}'); }
+function saveUsers(u)   { localStorage.setItem('cbUsers',   JSON.stringify(u)); }
 
+// ── Records ──
+function getRecords()   { return JSON.parse(localStorage.getItem('cbRecords') || '[]'); }
+function saveRecords(r) { localStorage.setItem('cbRecords', JSON.stringify(r)); }
+
+// ── Auto-login ──
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('cbLoggedIn')) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadReport();
+  }
+});
+
+// ── Auth ──
+function login() {
+  const user  = document.getElementById('username').value.trim();
+  const pass  = document.getElementById('password').value.trim();
+  const msg   = document.getElementById('loginMsg');
+  const users = getUsers();
+  if (!user || !pass)         { showMsg(msg, 'Enter username and password.', 'error'); return; }
+  if (!users[user])           { showMsg(msg, 'Account not found.', 'error'); return; }
+  if (users[user] !== pass)   { showMsg(msg, 'Wrong password.', 'error'); return; }
+  localStorage.setItem('cbLoggedIn', user);
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  loadReport();
+}
+
+function createAccount() {
+  const user  = document.getElementById('username').value.trim();
+  const pass  = document.getElementById('password').value.trim();
+  const msg   = document.getElementById('loginMsg');
+  const users = getUsers();
+  if (!user || !pass) { showMsg(msg, 'Enter a username and password.', 'error'); return; }
+  if (users[user])    { showMsg(msg, 'Username already taken.', 'error'); return; }
+  users[user] = pass;
+  saveUsers(users);
+  showMsg(msg, 'Account created! You can now sign in.', 'success');
+}
+
+function logout() {
+  localStorage.removeItem('cbLoggedIn');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+}
+
+// ── Tabs ──
+function showTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav .btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'report') loadReport();
+}
+
+// ── Check Out ──
+function checkout() {
+  const cbNum = document.getElementById('coNum').value.trim();
+  const stuId = document.getElementById('coStudent').value.trim();
+  const name  = document.getElementById('coName').value.trim();
+  const msg   = document.getElementById('coMsg');
+  if (!cbNum || !stuId) { showMsg(msg, 'Enter Chromebook # and Student ID.', 'error'); return; }
+  const records = getRecords();
+  if (records.find(r => r.cbNum === cbNum && !r.checkinDate)) {
+    showMsg(msg, `Chromebook #${cbNum} is already checked out!`, 'error'); return;
+  }
+  records.unshift({ cbNum, studentId: stuId, studentName: name, checkoutDate: today(), checkinDate: null });
+  saveRecords(records);
+  showMsg(msg, `✓ Chromebook #${cbNum} checked out to ${stuId}.`, 'success');
+  document.getElementById('coNum').value = '';
+  document.getElementById('coStudent').value = '';
+  document.getElementById('coName').value = '';
+}
+
+// ── Check In ──
+function checkin() {
+  const cbNum = document.getElementById('ciNum').value.trim();
+  const msg   = document.getElementById('ciMsg');
+  if (!cbNum) { showMsg(msg, 'Enter Chromebook #.', 'error'); return; }
+  const records = getRecords();
+  const record  = records.find(r => r.cbNum === cbNum && !r.checkinDate);
+  if (!record) { showMsg(msg, `Chromebook #${cbNum} is not currently checked out.`, 'error'); return; }
+  record.checkinDate = today();
+  saveRecords(records);
+  showMsg(msg, `✓ Chromebook #${cbNum} checked back in.`, 'success');
+  document.getElementById('ciNum').value = '';
+}
+
+// ── Report ──
+function loadReport() {
+  const records = getRecords();
+  const tbody   = document.getElementById('reportBody');
+  if (!records.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#6b7494;padding:20px">No records yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = records.map(r => `
+    <tr>
+      <td>#${r.cbNum}</td>
+      <td>${r.studentId}</td>
+      <td>${r.studentName || '—'}</td>
+      <td>${r.checkoutDate}</td>
+      <td>${r.checkinDate || '—'}</td>
+      <td><span class="badge ${r.checkinDate ? 'badge-in' : 'badge-out'}">${r.checkinDate ? 'Returned' : 'Out'}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ── Helpers ──
+function today() {
+  return new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+}
+
+function showMsg(el, text, type) {
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+</script>
 </body>
 </html>
